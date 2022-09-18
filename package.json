@@ -9,9 +9,10 @@
     "server": "hexo server"
   },
   "hexo": {
-    "version": ""
+    "version": "6.3.0"
   },
   "dependencies": {
+    "bulma-stylus": "0.8.0",
     "hexo": "^6.3.0",
     "hexo-generator-archive": "^1.0.0",
     "hexo-generator-category": "^1.0.0",
@@ -22,5 +23,9 @@
     "hexo-renderer-stylus": "^2.1.0",
     "hexo-server": "^3.0.0",
     "hexo-theme-landscape": "^0.0.3"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.19.1",
+    "babel-plugin-inferno": "^6.5.0"
   }
 }
