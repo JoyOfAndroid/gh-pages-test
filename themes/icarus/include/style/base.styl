@@ -4,7 +4,7 @@ bulma-stylus-root = '../../../../node_modules/bulma-stylus/stylus'
  *   Override Bulma CSS Framework
  * --------------------------------- */
 $body-size ?= 14px
-$body-background-color ?= #f7f7f7
+$body-background-color ?= #ffffff
 
 $family-sans-serif ?= Ubuntu, Roboto, 'Open Sans', 'Microsoft YaHei', sans-serif
 $family-code ?= 'Source Code Pro', monospace, 'Microsoft YaHei'
@@ -23,11 +23,11 @@ $custom-colors ?= {
 $navbar-item-active-color ?= $primary
 $footer-background-color ?= $scheme-main
 
-$gap ?= 64px
+$gap ?= 16px
 $tablet ?= 769px
-$desktop ?= 1088px
-$widescreen ?= 1280px
-$fullhd ?= 1472px
+$desktop ?= 1288px
+$widescreen ?= 1480px
+$fullhd ?= 1672px
 
 $shadow ?= 0 4px 10px rgba(0, 0, 0, 0.05)
 
@@ -79,6 +79,16 @@ body
 
 body > .section
     flex-grow: 1
+
+.column-left::before
+    content: ''
+    border-right: 1px solid #e5e5e5
+    left: 0
+    height: 100%
+    min-height: 100vh
+    width: inherit
+    position: absolute
+    top: -30px
 
 +desktop()
     ::-webkit-scrollbar
