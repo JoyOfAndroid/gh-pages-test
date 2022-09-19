@@ -1,0 +1,156 @@
+<hr>
+<p>title: 글로벌 이미지 테스트<br>tags:</p>
+<ul>
+<li>Androidx<br>categories: </li>
+<li>Androidx</li>
+<li>toc: true<br>excerpt: 글로벌 이미지 테스트</li>
+</ul>
+<hr>
+<h3 id="Android-12에서-새로운-SplashScreen-표시"><a href="#Android-12에서-새로운-SplashScreen-표시" class="headerlink" title="Android 12에서 새로운 SplashScreen 표시"></a>Android 12에서 새로운 SplashScreen 표시</h3><ul>
+<li>Splash Screen API 제공</li>
+</ul>
+<h3 id="작동-방식"><a href="#작동-방식" class="headerlink" title="작동 방식"></a>작동 방식</h3><ul>
+<li>Cold Start, Warm Start - o   Hot Start - x<ul>
+<li>시스템이 정의된 테마와 애니메이션으로 SplashScreen 표시</li>
+<li>앱이 준비되면, SplashScreen 닫히고, 앱 실행<br><img src="/hexo-test/2022/09/19/SplashScreen/50E7AC56-6E11-43FC-98AE-5FF8A745D756.png"></li>
+</ul>
+</li>
+</ul>
+<h3 id="디자인-스펙"><a href="#디자인-스펙" class="headerlink" title="디자인 스펙"></a>디자인 스펙</h3><p><img src="/hexo-test/2022/09/19/SplashScreen/8E7D350C-AC98-4193-804A-5B375E5BC57F.png"></p>
+<ul>
+<li>Adaptive icons<ul>
+<li><del>App icon with an icon background : 240 * 240 dp</del></li>
+<li><del>App icon without an icon background : 288 * 288dp</del></li>
+<li>108dp</li>
+</ul>
+</li>
+<li>Branded image : 200 * 800dp ( Android 12 )</li>
+<li>애니메이션<ul>
+<li>AVD ( AnimatedVectorDrawable )</li>
+<li>시간은 1000ms를 넘지 않는것을 추천</li>
+<li>1000ms넘는다면, looping animation 추천</li>
+<li>delay Start할수 있지만, 166 ms 보다 길수없음</li>
+</ul>
+</li>
+</ul>
+<h3 id="Android-12에서-SplashScreen-API-적용-이유"><a href="#Android-12에서-SplashScreen-API-적용-이유" class="headerlink" title="Android 12에서 SplashScreen API 적용 이유"></a>Android 12에서 SplashScreen API 적용 이유</h3><ul>
+<li>Android 버전별 화면 다름 </li>
+<li>기존 사용하던 Splash 화면과 중복</li>
+<li>기존 Splash에서 사용되던, 데이터 로딩, 브랜딩효과 대체</li>
+</ul>
+<h2 id="SplashScreen-적용"><a href="#SplashScreen-적용" class="headerlink" title="SplashScreen 적용"></a>SplashScreen 적용</h2><ul>
+<li>기본적으로 windowBackground, 런처 아이콘을 사용</li>
+</ul>
+<ol>
+<li>theme 사용</li>
+<li>더 오랜시간 유지</li>
+<li>Splash screen 닫기 애니메이션</li>
+</ol>
+<h3 id="Splash-Screen-API-추가-방법"><a href="#Splash-Screen-API-추가-방법" class="headerlink" title="Splash Screen API 추가 방법"></a>Splash Screen API 추가 방법</h3><pre><code class="groovy">implementation &#39;androidx.core:core-splashscreen:1.0.0-beta02&#39;
+</code></pre>
+<pre><code class="xml">&lt;style name=&quot;Splash.Theme&quot; parent=&quot;Theme.SplashScreen&quot;&gt;
+    &lt;item name=&quot;windowSplashScreenBackground&quot;&gt;@color/white&lt;/item&gt;
+    &lt;item name=&quot;windowSplashScreenAnimatedIcon&quot;&gt;@drawable/ic_app_icon&lt;/item&gt;
+
+    &lt;item name=&quot;android:windowSplashScreenIconBackgroundColor&quot; tools:targetApi=&quot;s&quot;&gt;@color/white&lt;/item&gt;
+    &lt;item name=&quot;android:windowSplashScreenBrandingImage&quot; tools:targetApi=&quot;s&quot;&gt;@drawable/brand_image&lt;/item&gt;
+
+    &lt;item name=&quot;windowSplashScreenAnimationDuration&quot;&gt;1000&lt;/item&gt;
+    &lt;item name=&quot;postSplashScreenTheme&quot;&gt;@style/Theme.Base&lt;/item&gt;
+&lt;/style&gt;
+</code></pre>
+<ul>
+<li><p>parent - Theme.SplashScreen</p>
+</li>
+<li><p>windowSplashScreenBackground - 백그라운드</p>
+<ul>
+<li>단일 색상, 단일 이미지만 가능</li>
+</ul>
+</li>
+<li><p>windowSplashScreenAnimatedIcon - 앱 아이콘 </p>
+<ul>
+<li>크기 제한</li>
+<li>설정안해도 기본 앱아이콘 사용되지만, 제거하려면 color&#x2F;transparent</li>
+</ul>
+</li>
+<li><p>windowSplashScreenAnimationDuration -   애니메이션 시간</p>
+<ul>
+<li>SplashScreen 유지시간과는 다름</li>
+</ul>
+</li>
+<li><p>postSplashScreenTheme - SplashScreen 이후, 앱 기본 테마 </p>
+</li>
+<li><p>windowSplashScreenIconBackground - 앱 아이콘 뒷 배경 ( Android 12)</p>
+</li>
+<li><p>windowSplashScreenBrandingImage - 스플래시 화면 하단에 표시 - 디자인 가이드 라인에서는 권장 x  ( Android 12)</p>
+</li>
+<li><p>스플래시 화면 지정 </p>
+<ul>
+<li>OnCreate 에서 super.onCreate() 이전에</li>
+</ul>
+</li>
+</ul>
+<pre><code class="kotlin">val splashScreen = installSplashScreen()
+super.onCreate()
+</code></pre>
+<ul>
+<li><p>스플래시 화면을 화면에 더 오래 표시 </p>
+<ul>
+<li>splashScreen.setKeepOnScreenCondition { true }</li>
+</ul>
+</li>
+<li><p>스플레시 닫기 애니메이션 </p>
+<ul>
+<li>splashScreen.setOnExitAnimationListener { splashScreenView -&gt; }</li>
+</ul>
+</li>
+</ul>
+<h3 id="기존-Splash화면-마이그레이션"><a href="#기존-Splash화면-마이그레이션" class="headerlink" title="기존 Splash화면 마이그레이션"></a>기존 Splash화면 마이그레이션</h3><ul>
+<li>기존 라우팅용으로사용되던 경우, <ul>
+<li>SplashScreen 사용하여, 렌더링</li>
+</ul>
+</li>
+</ul>
+<pre><code class="kotlin">       override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        super.onCreate(savedInstanceState)
+
+        // Keep the splash screen visible for this Activity
+        splashScreen.setKeepOnScreenCondition { true }
+        startSomeNextActivity()
+        finish()
+     }
+</code></pre>
+<ul>
+<li>기존 브랜딩을 위한 화면의 경우<ul>
+<li>ExitAnimation을 통해 자연스러운 브랜딩,, ( 하지만 SplashScreen 사용 추천 )</li>
+</ul>
+</li>
+<li>기존 Splash 화면 제거 <ul>
+<li>Application onCreate() 를 최대한 가볍게 유지하기 -  lazy <ul>
+<li>SplashScreen 최소화</li>
+</ul>
+</li>
+<li>필요에 따라서 Splash Screen 오래 유지하기 ( 데이터 로딩 등 )<ul>
+<li>splashScreen.setKeepOnScreenCondition 활용</li>
+</ul>
+</li>
+<li>Placeholder UI 활용 </li>
+<li>캐싱 사용 - 로딩 중 캐싱된 데이터 활용</li>
+</ul>
+</li>
+</ul>
+<h3 id="적용후기"><a href="#적용후기" class="headerlink" title="적용후기"></a>적용후기</h3><ul>
+<li>SpashScreen 화면 커스텀 영역이 너무 제한적 ( 아이콘 위치, 크기, 브랜딩 위치 등등 )</li>
+<li>의도는 잘 알겠으나, 강제성은 좀,, </li>
+<li>아직 자잘한 버그 존재 ( 외부에서 앱이 실행시  SplashScreen 정상적으로 안뜨는 현상 )</li>
+</ul>
+<h3 id="다른-앱들"><a href="#다른-앱들" class="headerlink" title="다른 앱들"></a>다른 앱들</h3><ul>
+<li>대부분 아직 적용 x ( 중복사용 중 )</li>
+<li>SplashScreen 가이드에 따라감</li>
+<li>공존 케이스<ul>
+<li>onCreate 최소화하고(background만 이용 ), 자연스럽게 기존 Splash 사용?(넷플릭스? )</li>
+<li>자연스러운 연결? (페북 트위터? )</li>
+</ul>
+</li>
+</ul>
