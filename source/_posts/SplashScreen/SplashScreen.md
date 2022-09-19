@@ -1,12 +1,12 @@
 ---
-title: 글로벌 이미지 테스트
+title: Splash Screen API
 tags:
   - Androidx
 categories: 
   - Androidx
   - 
 toc: true
-excerpt: 글로벌 이미지 테스트
+excerpt: Splash Screen API
 ---
 
 ### Android 12에서 새로운 SplashScreen 표시
